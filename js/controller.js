@@ -31,7 +31,8 @@ angular.module('trans', []).filter('currency',function () {
 function TableCtrl($scope, $filter) {
 
     var st = new Date();
-    st.setMonth(st.getMonth() - 5);
+    $scope.MONTHS_OF_DATA = 5;
+    st.setMonth(st.getMonth() - $scope.MONTHS_OF_DATA);
     $scope.data = random_transactions(st, new Date());
 
     $scope.page = 0;
@@ -139,4 +140,4 @@ function TableCtrl($scope, $filter) {
 
 }
 
-TableCtrl.$inject = ['$scope'];
+TableCtrl.$inject = ['$scope', '$filter'];
