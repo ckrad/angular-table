@@ -1,0 +1,119 @@
+<html>
+<head>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.currency.js"></script>
+    <!--script src="js/angular-1.0.2/angular.min.js"></script -->
+    <script src="js/underscore/underscore-min.js"></script>
+    <script src="js/random_transactions.js"></script>
+    <script src="js/controller.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+</head>
+
+<body ng-app="trans">
+<span ng-controller="TableCtrl" ng-cloak>
+        <p>Filter: <input type="text" ng-model="fname"/></p>
+
+        <ul>
+                   <li
+                           ng-repeat="p in pages" style="display: inline-block; list-style: none; width: 1.5em"
+                           ng-class="pclass(p)">
+                       <span ng-click="set_page(p)"> {{p + 1}}</span>
+                   </li>
+               </ul>
+                <p>Page: {{ page + 1 }}</p>
+                <p>Items Per Page: <input type="range" min="5" max="40" step="5" ng-model="page_size"/>{{ page_size }}
+
+                <table class="table table-condensed">
+                    <thead>
+                    <th></th>
+                    <th>#</th>
+                    <th>
+                        ID
+                    </th>
+
+                    <th ng-click="sorter='date'" ng-class="hclass(sorter, 'date')">Date</th>
+                    <th ng-click="sorter='name'" ng-class="hclass(sorter, 'name')">
+                        Expense
+                    </th>
+                    <th ng-click="sorter='type'" ng-class="hclass(sorter, 'type')">Type</th>
+                    <th ng-click="sorter='amount'" ng-class="hclass(sorter, 'amount')">Amount</th>
+                    </thead>
+                    <tbody ng-repeat="(i, row) in data |filter: fname | startFrom: page * page_size | limitTo: page_size"
+                           id="row-{{data.id}}">
+                    <tr ng-class="rclass(i)">
+                        <td><input type="checkbox" ng-model="row.checked"></td>
+
+                        <td>{{ $index + 1 + (page * page_size) }}</td>
+                        <td>{{row.id}}</td>
+                        <td style="text-align: right">{{row.date | date }}</td>
+                        <td>
+                            <span ng-click="edit(row, 'name')" ng-hide="row.edit_name">{{ row.name }}</span>
+                            <input type="text" ng-model="row.name" ng-show="row.edit_name" onblur="on_edit_leave()"
+                                   style="width: 22em"/>
+                        </td>
+                        <td>{{row.type}}</td>
+                        <td style="text-align: right">
+                            <span ng-click="edit(row, 'amount')"
+                                  ng-hide="row.edit_amount">{{ row.amount | currency }}</span>
+                            <input type="text" ng-model="row.amount" ng-show="row.edit_amount" onblur="on_edit_leave()"
+                                   style="width: 6em"/>
+
+                        </td>
+                        <td>
+                            <button ng-click="popout(row, this)">Flyout</button>
+                        </td>
+                    </tr>
+                    <tr class="flyout" ng-show="row.flyout">
+                        <th>Detail</th>
+                        <td colspan="2"><i>comment on {{row.name }}</i></td>
+                        <td></td>
+                    </tr>
+
+                    </tbody>
+                    <tfoot>
+
+                    <tr>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr>
+                        <th colspan="4">TOTAL SHOWN</th>
+                        <td style="text-align: right">
+                            {{total_on_page() | currency }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="4">TOTAL</th>
+                        <td style="text-align: right">
+                            {{total() | currency }}
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+                <button ng-click="zero_out()">Zero Out Checked</button>
+                <button ng-click="delete_checked()">Delete Checked</button>
+
+    </span><!-- end controller -->
+</body>
+</html>
+
+<style>
+    .flyout {
+        background-color: yellow
+    }
+
+    .flyout td {
+
+        border: none !important;
+    }
+
+    tr.odd td {
+        border-top: none !important;
+        border-bottom: none !important;
+    }
+
+    .active {
+        background-color: black;
+        color: white
+    }
+</style>
