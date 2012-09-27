@@ -110,6 +110,6 @@ By assigning the result of the callback to $scope.message, the template is updat
 
 # Further Learning
 
-The extensive [http://docs.angularjs.org/tutorial](Angular Tutorial) covers a lot of ground.
+The extensive [Angular Tutorial](http://docs.angularjs.org/tutorial) covers a lot of ground.
 
-My [http://noogle.io/noogle/find?search=foo](Noogle Search Engine) also has a lot of interesting code for data parsing.
+My [Noogle Search Engine](http://noogle.io/noogle/find?search=foo) also has a lot of interesting code for data parsing.
